@@ -20,4 +20,27 @@ namespace console_helper {
 
 		(void)MoveWindow(consoleWindow, windowRect.left, windowRect.top, width, height, TRUE);
 	}
+
+	void set_console_font(LPCWSTR fontName) {
+		set_console_font(fontName, 20);
+	}
+
+	void set_console_font(LPCWSTR fontName, int sizeY) {
+		set_console_font(fontName, sizeY, 0);
+	}
+
+	void set_console_font(LPCWSTR fontName, int sizeY, int sizeX) {
+		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+		CONSOLE_FONT_INFOEX fontInfo;
+		fontInfo.cbSize = sizeof(CONSOLE_FONT_INFOEX);
+		fontInfo.nFont = 0;
+		fontInfo.dwFontSize.X = sizeX;  // Width of the font; 0 means the default size
+		fontInfo.dwFontSize.Y = sizeY; // Height of the font
+		fontInfo.FontFamily = FF_DONTCARE;
+		fontInfo.FontWeight = FW_NORMAL;
+		wcscpy_s(fontInfo.FaceName, fontName); // Font name
+
+		(void)SetCurrentConsoleFontEx(hConsole, FALSE, &fontInfo);
+	}
 }
