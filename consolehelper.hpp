@@ -15,7 +15,9 @@ namespace console_helper {
 	inline void set_size(int width, int height) {
 		HWND consoleWindow = GetConsoleWindow();
 
-		RECT windowRect;
+		RECT windowRect = { 0 };
+		ZeroMemory(&windowRect, sizeof windowRect);
+
 		(void)GetClientRect(consoleWindow, &windowRect);
 
 		(void)MoveWindow(consoleWindow, windowRect.left, windowRect.top, width, height, TRUE);
@@ -25,7 +27,9 @@ namespace console_helper {
 	inline void set_console_font(LPCWSTR fontName, int sizeY, int sizeX) {
 		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
-		CONSOLE_FONT_INFOEX fontInfo;
+		CONSOLE_FONT_INFOEX fontInfo = { 0 };
+		ZeroMemory(&fontInfo, sizeof fontInfo);
+
 		fontInfo.cbSize = sizeof(CONSOLE_FONT_INFOEX);
 		fontInfo.nFont = 0;
 		fontInfo.dwFontSize.X = sizeX;  // Width of the font; 0 means the default size
